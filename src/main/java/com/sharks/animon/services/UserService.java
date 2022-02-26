@@ -17,12 +17,13 @@ public class UserService {
 	private UserRepository userRepo;
 	
 	public User register(User newUser, BindingResult result) {
+		
 		Optional<User> potentialUser = userRepo.findByEmail(newUser.getEmail());
 		if(potentialUser.isPresent()) {
 			result.rejectValue("email", "Unique", "Login Error");
 		}
 		
-		if(!newUser.getPassword().equals(newUser.getClass())) {
+		if(!newUser.getPassword().equals(newUser.getConfirm())) {
 			result.rejectValue("confirm", "Matches", "passwords do not match");
 		}
 		
