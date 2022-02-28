@@ -50,24 +50,41 @@ public class UserController {
 			return "index.jsp";
 		} else {
 			sesh.setAttribute("user_id", newUser.getId());
-			return "redirect:/createpet";
+			return "redirect:/new/pet";
 		}
 		
 	}
 
-	// Create a pet
-	@GetMapping("/createpet")
-	public String createPet(HttpSession sesh,
-							Model model) {
-		Long userId =(Long) sesh.getAttribute("user_id");
-		if(userId == null) {
-			return "redirect:/";
-		} else {
-			User thisUser = userServ.findONe(userId);
-			model.addAttribute("thisUser", thisUser);
-			return "createpet.jsp";
-		}
-	}
+	// LOGIN##############################################################
+		@PostMapping("/login")
+		public String login(@Valid @ModelAttribute("newLogin") LoginUser newLogin, BindingResult result, Model model,
+				HttpSession session) {
+			User user = userServ.login(newLogin, result);
 
+			if (result.hasErrors()) {
+				model.addAttribute("newUser", new User());
+				return "index.jsp";
+			} else {
+				session.setAttribute("user_id", user.getId());
+				if(user.getPets().size() == 0) {
+					return "redirect:/new/pet";
+				}else {
+					return "redirect:/home";
+				}
+				
+			}
+
+		}
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 }
