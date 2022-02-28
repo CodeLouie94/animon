@@ -1,12 +1,15 @@
 package com.sharks.animon.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -41,12 +44,29 @@ public class User {
 	@NotEmpty(message = "Confirm Password is required!")
 	@Size(min = 8, max = 128, message = "Confirm Password must be between 8 and 128 characters")
 	private String confirm;
+	
+	
+	private Integer gold = 0;
+
 
 	@Column(updatable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createdAt;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date updatedAt;
+	
+    //1:M
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    private List<Pet> pets;
+	
+
+	public List<Pet> getPets() {
+		return pets;
+	}
+
+	public void setPets(List<Pet> pets) {
+		this.pets = pets;
+	}
 
 	@PrePersist
 	protected void onCreate() {
@@ -61,6 +81,14 @@ public class User {
 	
 	//SETTERS AND GETTERS
 	public User() {}
+	
+	public Integer getGold() {
+		return gold;
+	}
+	
+	public void setGold(Integer gold) {
+		this.gold = gold;
+	}
 
 	public Long getId() {
 		return id;
