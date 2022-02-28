@@ -20,8 +20,20 @@
 </head>
 <body>
 
-	home.jsp
-	<h1>${thisUser}</h1>
+	<c:forEach items = "${ thisUser.getPets()}" var="onePet" >
+		<div>
+			<h1>${onePet.getPetName()}</h1>
+			<h2>Energy: ${onePet.getEnergy()}</h2>
+			<h2>Happiness: ${onePet.getHappiness()}</h2>
+			<h2>Hunger: ${onePet.getHealth()}</h2>
+			<h2>Clean: ${onePet.getCleanliness()}</h2>
+		</div>
+		<img src="/images/${onePet.getType()}pic.webp" alt="Failed image: ${onePet.getType()}" />
+		<button>Clean Me</button>
+		<button>Feed Me</button>
+		<a class="btn btn-primary" href="/play/${onePet.getId()}">Play with Me</a>
+	</c:forEach>
+	
 	
 	
 </body>

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.sharks.animon.models.Pet;
@@ -27,7 +28,7 @@ public class PetController {
 	private PetService petServ;
 	
 	
-	//create pet form ##############################################
+	//CREATE PET FORM ##############################################
 	@GetMapping("/new/pet")
 	public String newPet(HttpSession session, Model model) {
 		Long userId = (Long) session.getAttribute("user_id");
@@ -40,7 +41,7 @@ public class PetController {
 			return "createpet.jsp";
 		}
 	}
-	
+	//CREATE HANDLER -----------------------------
 	@PostMapping("/create/pet")
 	public String processCreatePet(@Valid @ModelAttribute("newPet") Pet pet,
 									BindingResult result, HttpSession session, Model model) {
@@ -66,10 +67,16 @@ public class PetController {
 			User thisUser = userServ.findOne(userId);
 			List<Pet> allPets = petServ.allPets();
 			model.addAttribute("thisUser", thisUser);
-			model.addAttribute("allPets", allPets);
-			System.out.println("FASDFGASIDHUFHAISDUFHAOISDUFHAIOSUD");
+			model.addAttribute("allPets", allPets); //EVERYONES PETS IN DB????
 			return "home.jsp";
 		}
+	}
+	
+	@GetMapping("/play/{id}")
+	public String play(@PathVariable("id") Long id) {
+		Pet pet = petServ.findPet(id);
+		pet.play();
+		return "redirect:/home";
 	}
 	
 
