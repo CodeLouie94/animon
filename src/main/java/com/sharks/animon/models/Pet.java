@@ -29,13 +29,13 @@ public class Pet {
 	@Size(min = 3, max=15, message="Pet name must be at least 3 and 15 characters")
 	private String petName;
 	
-	private Integer health = 100;
+	private Integer health;
 	
-	private Integer happiness = 100;
+	private Integer happiness;
 	
-	private Integer energy = 100;
+	private Integer energy;
 	
-	private Integer cleanliness = 10;
+	private Integer cleanliness;
 	
 	private String type;
 	
@@ -62,8 +62,23 @@ public class Pet {
 	@JoinColumn(name="user_id")
 	private User owner;
 	
-	public Pet() {}
+	public Pet() {
+		this.health = 100;
+		
+		this.happiness = 100;
+		
+		this.energy = 100;
+		
+		this.cleanliness = 10;
+	}
 
+	//PET ACTIONS
+	public void play() {
+		System.out.println("PLAY!!");
+		this.setEnergy(50);
+	}
+	
+	//GETTERS AND SETTERS
 	public Long getId() {
 		return id;
 	}
